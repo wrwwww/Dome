@@ -1,3 +1,5 @@
+package test_Dome;
+
 import java.util.Arrays;
 
 public class School {

@@ -1,13 +1,8 @@
 package memory.hash;
-
-
-import test_Dome.Node;
-
 import java.util.Arrays;
 
 public class HashFun {
-//    int key;
-//    int index;
+
     int[] array;
 
     public HashFun(){
@@ -16,9 +11,6 @@ public class HashFun {
 
     private void Map(int key, int index) {
             this.array[key]=index;
-    }
-    public void addKey(Node nums){
-        Map(nums.getAge(), nums.getNums());
     }
 
     public void addIntKey(int index,int key){

@@ -36,12 +36,7 @@ public class ListNode {
 
 
 
-//    private void addEnd(ListNode next,ListNode root) {
-//            while (root.next!=null){
-//                root = root.next;
-//            }
-//        root.next = next;
-//    }
+
 
     //链表遍历
     public void printf() {

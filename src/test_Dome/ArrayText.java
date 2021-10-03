@@ -1,7 +1,6 @@
 package test_Dome;
 
-import java.util.Arrays;
-import java.util.Stack;
+import java.util.*;
 
 public class ArrayText {
     public static void main(String[] args) {
@@ -31,14 +30,62 @@ public class ArrayText {
 //        }
 //        System.out.println(max);
 
-        Stack<Integer> abc=new Stack<Integer>();
-        for (int i = 0; i < 10; i++) {
-            abc.add(i + 1);
+//        Stack<Integer> abc=new Stack<Integer>();
+//        for (int i = 0; i < 10; i++) {
+//            abc.add(i + 1);
+//        }
+//        List<List<String>> ttt = new ArrayList<List<String>>();
+//        List<String> cd = new ArrayList<>();
+//        cd.add("dfaf");
+//        cd.add("sfsf");
+//        HashMap<String, Integer> abd = new HashMap<String,Integer>();
+//        abd.put("hgjh",0);
+//        for (String atr:
+//             cd) {
+//            System.out.println(atr);
+//        }
+       // System.out.println((int)'1');
+//
+//        System.out.println(abc.pop());
+//        System.out.println(abc.pop());
+//        System.out.println(cd.get(0));
+        StringBuffer temp=new StringBuffer();
+//        temp.append('');
+        // 48
+        int num=Integer.MAX_VALUE;
+        while(num!=0){
+            int a=num%16;
+            num=num/16;
+            if(a<10)
+            temp.append((char)(48+a));
+            else temp.append((char)(a+87));
         }
-        System.out.println(abc.pop());
-        System.out.println(abc.pop());
-        System.out.println();
+        temp.reverse();
+        System.out.println(temp);
 
 
+//        System.out.println(toHex(-1));
+//        System.out.println(toHex(-2));
+        System.out.println(toHex(Integer.MAX_VALUE-7));
+        System.out.println(0x80000000);
+
+        System.out.println(0xfffffff0);
+        System.out.println(Integer.toBinaryString(-1));
+        System.out.println(Integer.toBinaryString(-2));
     }
+
+        public static String toHex(int _num) {
+            if (_num == 0) return "0";
+            long num = _num;
+            StringBuilder sb = new StringBuilder();
+            if (num < 0) num = (long) (Math.pow(2, 32) + num);
+            while (num != 0) {
+                long u = num % 16;
+                char c = (char) (u + '0');
+                if (u >= 10) c = (char) (u - 10 + 'a');
+                sb.append(c);
+                num /= 16;
+            }
+            return sb.reverse().toString();
+        }
 }

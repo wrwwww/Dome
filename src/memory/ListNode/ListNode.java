@@ -1,7 +1,7 @@
 package memory.ListNode;
 
 public class ListNode {
-    int val;
+    public int val;
     public ListNode next;
 
         //方法重载

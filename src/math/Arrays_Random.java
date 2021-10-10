@@ -10,4 +10,8 @@ public class Arrays_Random {
             array[i] = (int) (Math.random() * 100000) % n;
         }
     }
+
+    public int[] getArray() {
+        return array;
+    }
 }

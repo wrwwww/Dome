@@ -1,29 +1,48 @@
 package memory.hash;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class day0917 {
     public static void main(String[] args) {
-        HashMap<Integer, String> map = new HashMap<>();
-        map.put(1000000, "我是1000000");
-        map.put(2, "我是2");
-        map.put(3, "我是3");
-        map.put(4, "我是4");
-        map.put(5, "我是5");
-        map.put(6, "我是6");
-        map.put(1000000, "我是1000001");
-
-        System.out.println(map.containsKey(1));
-        System.out.println(map.containsKey(2));
-
-        System.out.println(map.get(4));
-        System.out.println(map.get(10));
-
-        map.put(4, "他是4");
-        System.out.println(map.get(4));
-
-        map.remove(4);
-        System.out.println(map.get(4));
+        int[] test = new int[]{1, 2, 3, 4};
+        System.out.println(Arrays.toString(permute(test).toArray()));
 
     }
+
+    /**
+     * 全排列
+     * @param nums 等待排列数组
+     * @return 全排列的集合
+     */
+    public static List<List<Integer>> permute(int[] nums) {
+        int len = nums.length;
+        List<List<Integer>> ls = new LinkedList<>();
+        Boolean[] bool = new Boolean[len];
+        Arrays.fill(bool, false);
+        for (int i = 0; i < len; i++) {
+            bool[i] = true;
+            List<Integer> set = new LinkedList<>();
+            set.add(nums[i]);
+            dfs(nums, bool, ls, set, len);
+            bool[i] = false;
+        }
+        return ls;
+    }
+
+    public static void dfs(int[] nums, Boolean[] bool, List<List<Integer>> ls, List<Integer> set, int len) {
+        for (int i = 0; i < len; i++) {
+            if (!bool[i]) {
+                bool[i]=true;
+                set.add(nums[i] );
+                dfs(nums, bool, ls, set, len);
+                set.remove(set.size() - 1);
+                bool[i] = false;
+            }
+        }
+        if(set.size()==len){
+            List<Integer> temp = new LinkedList<>(set);
+            ls.add(temp);
+        }
+    }
+
 }

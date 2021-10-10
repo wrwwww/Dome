@@ -1,7 +1,7 @@
 package memory.ListNode;
 
 public class ListNode {
-    int val;
+    public int val;
     public ListNode next;
 
         //方法重载
@@ -40,6 +40,7 @@ public class ListNode {
 
     //链表遍历
     public void printf() {
+
             ListNode l2=this;
             while(l2!=null){
                 System.out.println(l2.val);

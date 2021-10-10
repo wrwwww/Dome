@@ -13,17 +13,7 @@ import java.util.Arrays;
 //著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 public class Hash_test {
     public static void main(String[] args) {
-//        Node a1 = new Node(19,3);
-//        Node a2 = new Node(18,4);
-//        Node a3 = new Node(17,7);
-//        Node a4 = new Node(16,5);
-//        Node a5 = new Node(15,3);
         HashFun map=new HashFun();
-//        map.addKey(a1);
-//        map.addKey(a2);
-//        map.addKey(a3);
-//        map.addKey(a4);
-//        map.addKey(a5);
 
         int[] nums = new int[]{0, 2, 7, 11, 15, 3, 5};
         for (int i = 0; i < nums.length; i++) {

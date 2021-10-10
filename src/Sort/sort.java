@@ -44,7 +44,8 @@ class sort {
 
         }
         nums[low] = pivotKey;
-        if(top==high-1)return;
+        if(top==high-1) {
+        }
         else {
             sortText(nums, top, high - 1);
             sortText(nums, high + 1, end);

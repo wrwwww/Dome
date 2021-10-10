@@ -1,8 +1,10 @@
 package Sort;
 
-import com.sun.source.tree.ReturnTree;
+//import com.sun.source.tree.ReturnTree;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class BinSearch {
@@ -63,7 +65,7 @@ public class BinSearch {
      *
      */
     public static boolean queBinTree() {
-
+        List<Integer> ls=new ArrayList<>();
         return false;
     }
 

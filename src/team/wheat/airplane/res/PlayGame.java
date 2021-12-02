@@ -1,9 +1,6 @@
 package team.wheat.airplane.res;
 
 
-
-import team.wheat.airplane.MainActivity;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

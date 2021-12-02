@@ -1,15 +1,14 @@
 package Homework;
 
-import java.awt.image.BufferedImage;
 
 public class Bullet extends Fly {
     private int speed;
-    static BufferedImage image = Activity.bullet;
-    ;
 
     Bullet() {
-        speed = 5;
-
+        setSpeed(5);
+        image = Activity.bullet;
+        setHeight(image.getHeight());
+        setWidth(image.getWidth());
     }
 
     Bullet(int x, int y) {
@@ -20,9 +19,13 @@ public class Bullet extends Fly {
 
 
     @Override
-    void air() {
+    void move() {
         y -= speed;
     }
+
+
+
+
     public int getSpeed() {
         return speed;
     }

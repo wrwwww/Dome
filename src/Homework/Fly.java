@@ -1,12 +1,25 @@
 package Homework;
 
+import java.awt.image.BufferedImage;
+
 public abstract class Fly {
     int x;
     int y;
     int width;
     int height;
+    BufferedImage image;
 
-    abstract void air();
+    abstract void move();
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+        this.width = image.getWidth();
+        this.height = image.getHeight();
+    }
 
     public int getX() {
         return x;
@@ -40,5 +53,12 @@ public abstract class Fly {
         this.height = height;
     }
 
+
+    public boolean bang(Fly fly){
+        return fly.getX() >= x - fly.getWidth() &&
+                fly.getY() >= y - fly.getHeight() &&
+                fly.getX() <= x + this.getWidth() &&
+                fly.getY() <= y + this.getHeight();
+    }
 
 }

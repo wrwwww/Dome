@@ -1,7 +1,5 @@
 package test_Dome;
 
-import java.util.*;
-
 public class ArrayText {
     public static void main(String[] args) {
 //        int[] arr1 = new int[10];

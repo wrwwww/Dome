@@ -1,10 +1,7 @@
 package Window;
 
 
-import java.awt.FlowLayout;
-import java.awt.Frame;
-import java.awt.Label;
-import java.awt.TextField;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;

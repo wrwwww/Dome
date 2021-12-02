@@ -1,7 +1,5 @@
 package LeetCode;
 
-import java.util.Scanner;
-
 public class 牛顿迭代开二次根号 {
     public static void main(String[] args) {
 //        Scanner input = new Scanner(System.in);

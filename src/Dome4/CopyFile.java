@@ -1,7 +1,9 @@
 package Dome4;
 
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class CopyFile extends IOException {
     //这是一个负责复制文件从A>>B的类

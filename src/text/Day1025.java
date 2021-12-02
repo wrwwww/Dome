@@ -1,6 +1,5 @@
 package text;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 class abc{

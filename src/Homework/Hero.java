@@ -2,32 +2,56 @@ package Homework;
 
 import java.awt.image.BufferedImage;
 
+
 public class Hero extends Fly {
-    int number = 1;
-    Bullet[] daDan;
-    BufferedImage image;
+
+    int hp;
+    Bullet[] bullets;//子弹集合
+    BufferedImage[] image;//英雄状态机
 
     Hero() {
-        daDan = new Bullet[0];
-        image = Activity.hero0;
+        hp = 3;
+        bullets = new Bullet[0];
+        image = new BufferedImage[2];
+        image[0] = Activity.hero0;
+        image[1] = Activity.hero1;
+        this.setWidth(image[0].getWidth());
+        this.setHeight(image[0].getHeight());
+
+    }
+
+    //不停刷新图片
+    int index = 0;//记号
+    public BufferedImage getImage() {
+        return image[index++ % 2];
     }
 
     @Override
-    void air() {
-
+    public boolean bang(Fly bullet) {
+        return false;
     }
 
+
+    int number = 1;
     Bullet[] shoot() {
         if (number == 1) {
-            return new Bullet[]{new Bullet(this.x + this.image.getWidth() / 2 - Bullet.image.getWidth() / 2, this.y - 20)};
-        } else {
-            return new Bullet[]{new Bullet(this.x, this.y), new Bullet(this.x, this.y)};
+            int len=new Bullet().getWidth();
+            return new Bullet[]{new Bullet(this.x + this.image[0].getWidth() / 2 - len / 2, this.y - 20)};
+        } else if (number==2) {
+            int len=new Bullet().getWidth();
+            return new Bullet[]{new Bullet(this.x + this.image[0].getWidth() / 4 - len / 2, this.y), new Bullet(this.x + this.image[0].getWidth() / 2 + len / 2, this.y)};
         }
+        return null;
     }
 
-    void bulletFly(){
-        for (int i = 0; i < daDan.length; i++) {
-            daDan[i].air();
+
+    public void bulletFly() {
+        for (Bullet bullet : bullets) {
+            bullet.move();
         }
+    }
+    @Override
+    public void move() {
+
     }
 }

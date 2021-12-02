@@ -1,7 +1,5 @@
 package text;
 
-import java.util.Random;
-
 public class day1018 {
     public static void main(String[] args) {
 //        System.out.println(2,147,483,647);

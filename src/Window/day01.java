@@ -1,13 +1,10 @@
 package Window;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.TargetDataLine;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.URL;
+import java.io.IOException;
 import java.util.Objects;
 
 

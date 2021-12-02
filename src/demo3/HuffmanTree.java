@@ -1,7 +1,5 @@
 package demo3;
 
-import java.util.Arrays;
-
 public class HuffmanTree {
     Node root;
 

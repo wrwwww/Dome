@@ -1,7 +1,5 @@
 package test_Dome;
 
-import java.util.Arrays;
-
 public class StringMatch {
     //KMP字符匹配算法
     //对于暴力破解避免了多余的匹配

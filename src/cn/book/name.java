@@ -1,8 +1,6 @@
 package cn.book;
 
 import java.io.*;
-import java.util.Objects;
-import java.util.Scanner;
 
 public class name {
     public static void main(String[] args)throws IOException {

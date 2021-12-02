@@ -1,12 +1,13 @@
 package team.wheat.airplane;
 
+import team.wheat.airplane.res.PlayGame;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-import team.wheat.airplane.res.PlayGame;
 
 
 

@@ -5,7 +5,15 @@ import java.awt.image.BufferedImage;
 
 public class Hero extends Fly {
 
-    int hp;
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    private int hp;
     Bullet[] bullets;//子弹集合
     BufferedImage[] image;//英雄状态机
 
@@ -36,10 +44,10 @@ public class Hero extends Fly {
     Bullet[] shoot() {
         if (number == 1) {
             int len=new Bullet().getWidth();
-            return new Bullet[]{new Bullet(this.x + this.image[0].getWidth() / 2 - len / 2, this.y - 20)};
+            return new Bullet[]{new Bullet(this.getX() + this.image[0].getWidth() / 2 - len / 2, this.getY() - 20)};
         } else if (number==2) {
             int len=new Bullet().getWidth();
-            return new Bullet[]{new Bullet(this.x + this.image[0].getWidth() / 4 - len / 2, this.y), new Bullet(this.x + this.image[0].getWidth() / 2 + len / 2, this.y)};
+            return new Bullet[]{new Bullet(this.getX() + this.image[0].getWidth() / 4 - len / 2, this.getY()), new Bullet(this.getX() + this.image[0].getWidth() / 2 + len / 2, this.getY())};
         }
         return null;
     }

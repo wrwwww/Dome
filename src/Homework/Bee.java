@@ -8,11 +8,11 @@ public class Bee extends Fly implements Reward{
 
     Bee() {
         speed = 2;
-        image = Activity.bee;
-        y = -this.image.getHeight();
-        x = ((int) (Math.random() * 10000) % 400);
-        height = this.image.getHeight();
-        width = this.image.getWidth();
+        super.setImage(Activity.bee);
+        setY(-super.getImage().getHeight());
+        setX(((int) (Math.random() * 10000) % 400));
+        setHeight(super.getImage().getHeight());
+        setWidth(super.getImage().getWidth());
     }
 
     public int getSpeed() {
@@ -26,7 +26,7 @@ public class Bee extends Fly implements Reward{
 
     @Override
     public void move() {
-        y += speed;
+        setY(getY() + speed);
     }
 
 
@@ -38,7 +38,7 @@ public class Bee extends Fly implements Reward{
 
     @Override
     public void setImage(BufferedImage image) {
-        this.image = image;
+        setImage(image);
     }
 
 
@@ -46,8 +46,8 @@ public class Bee extends Fly implements Reward{
     @Override
     public int type() {
         int i=Activity.randomNumber(5)+1;
-        if (i==5)
-        return 1;
+        if (i <= 3)
+            return 1;
         return 2;
     }
 }

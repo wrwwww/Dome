@@ -6,21 +6,21 @@ public class Bullet extends Fly {
 
     Bullet() {
         setSpeed(5);
-        image = Activity.bullet;
-        setHeight(image.getHeight());
-        setWidth(image.getWidth());
+        setImage(Activity.bullet);
+        setHeight(getImage().getHeight());
+        setWidth(getImage().getWidth());
     }
 
     Bullet(int x, int y) {
         this();
-        this.x = x;
-        this.y = y;
+        this.setX(x);
+        this.setY(y);
     }
 
 
     @Override
     void move() {
-        y -= speed;
+        setY(getY() - speed);
     }
 
 

@@ -90,12 +90,11 @@ public class Activity extends JPanel {
                         public void run() {
                             if (!isGaveOver()) {
                                 bulletAction();//子弹移动并添加
-                                flyAction();//敌机奖励机的移动添加
+//                                flyAction();//敌机奖励机的移动添加
                                 bangAction();//子弹碰撞fly
                                 bang2Action();//hero碰撞fly
                                 clearArrays();
                                 clearBullet();
-
                             }
                             repaint();//重绘
                         }
@@ -163,7 +162,7 @@ public class Activity extends JPanel {
     }
     public void bang2(Hero hero, int i) {
         if (fly_list[i].bang(hero)) {
-            hero.hp -= 1;
+            hero.setHp(hero.getHp() - 1);
             fly_list[i] = fly_list[fly_list.length - 1];
             fly_list = Arrays.copyOf(fly_list, fly_list.length - 1);
         }
@@ -183,10 +182,14 @@ public class Activity extends JPanel {
                 score += e.getScore();
             } else if (fly_list[index] instanceof Reward) {
                 Reward e = (Reward) fly_list[index];
-                if (e.type() == Reward.double_bullet) {
-                    hero.number = 2;
-                } else if (e.type() == Reward.hp) {
-                    hero.hp += 1;
+                int type = e.type();
+                switch (type) {
+                    case Reward.double_bullet:
+                        hero.number = 2;
+                        break;
+                    case Reward.hp:
+                        hero.setHp(hero.getHp() + 1);
+                        break;
                 }
             }
             fly_list[index] = fly_list[fly_list.length - 1];
@@ -200,7 +203,7 @@ public class Activity extends JPanel {
 
     public boolean isGaveOver() {
 
-        if (hero.hp <= 0) {
+        if (hero.getHp() <= 0) {
             status = OVER;
             time.cancel();
             return true;
@@ -211,28 +214,61 @@ public class Activity extends JPanel {
     public void clearArrays() {
         List<Integer> list = new LinkedList<>();
         for (int i = 0; i < fly_list.length; i++) {
-            if (fly_list[i].getY() >= HEIGHT) {
+            if (isOuter(fly_list[i])) {
                 list.add(i);
             }
         }
-        int a=0;
-        for (int i:list) {
+        int a = 0;
+        for (int i : list) {
             fly_list[i] = fly_list[fly_list.length - 1 - a++];
         }
-        fly_list=Arrays.copyOf(fly_list,  fly_list.length - list.size());
+        fly_list = Arrays.copyOf(fly_list, fly_list.length - list.size());
     }
-    public void clearBullet(){
-        List<Integer> list = new LinkedList<>();
-        for (int i = 0; i < hero.bullets.length; i++) {
-            if (hero.bullets[i].getY()+hero.bullets[i].getHeight()<=0) {
-                list.add(i);
+
+    public boolean isOuter(Fly fly) {
+        return fly.getY() + fly.getHeight() <= 0 || fly.getY() >= HEIGHT;
+    }
+
+    /**
+     * 处理子弹数组
+     * 删除数组中越界的子弹
+     * 先将越界的用不越界的替换最后将原数组空间变得合适
+     */
+    public void clearBullet() {
+
+        int left = 0;
+        Fly[] fly = hero.bullets;
+        int right = fly.length - 1;
+        if (left == right) return;
+        while (left <= right) {
+//            如果没有碰撞就++
+            while (left <= right && !isOuter(fly[left])) {
+                left += 1;
+            }
+            //如果有碰撞，后指针找
+            while (left <= right && isOuter(fly[right])) {
+                right -= 1;
+            }
+            if (left <= right) {
+                fly[left] = fly[right];
+                right--;
+                left++;
             }
         }
-        int a=0;
-        for (int i:list) {
-            hero.bullets[i] = hero.bullets[hero.bullets.length - 1 - a++];
-        }
-        hero.bullets = Arrays.copyOf(hero.bullets, hero.bullets.length - list.size());
+        hero.bullets = Arrays.copyOf((Bullet[]) fly, left);
+
+
+//        List<Integer> list = new LinkedList<>();
+//        for (int i = 0; i < hero.bullets.length; i++) {
+//            if (isOuter(hero.bullets[i])) {
+//                list.add(i);
+//            }
+//        }
+//        int a=0;
+//        for (int i:list) {
+//            hero.bullets[i] = hero.bullets[hero.bullets.length - 1 - a++];
+//        }
+//        hero.bullets = Arrays.copyOf(hero.bullets, hero.bullets.length - list.size());
 
     }
 
@@ -278,13 +314,13 @@ public class Activity extends JPanel {
         draw.drawImage(hero.getImage(), hero.getX(), hero.getY(), null);
         draw.setFont(font);
         draw.drawString("得分:" + score, 15, 15);
-        draw.drawString("HP:" + hero.hp, 15, 45);
+        draw.drawString("HP:" + hero.getHp(), 15, 45);
 
         for (int i1 = 0; i1 < hero.bullets.length; i1++) {
-            draw.drawImage(hero.bullets[i1].image, hero.bullets[i1].x, hero.bullets[i1].y, this);
+            draw.drawImage(hero.bullets[i1].getImage(), hero.bullets[i1].getX(), hero.bullets[i1].getY(), null);
         }
         for (Fly value : fly_list) {
-            draw.drawImage(value.image, value.getX(), value.getY(), this);
+            draw.drawImage(value.getImage(), value.getX(), value.getY(), this);
         }
         repaint();
     }

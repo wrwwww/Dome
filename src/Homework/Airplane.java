@@ -7,11 +7,11 @@ public class Airplane extends Fly implements Enemy {
 
     Airplane() {
         speed = 1;
-        image = Activity.airplane;
-        y = -this.image.getHeight();
-        x = ((int) (Math.random() * 10000) % 400);
-        height = this.image.getHeight();
-        width = this.image.getWidth();
+        setImage(Activity.airplane);
+        setY(-this.getImage().getHeight());
+        setX(((int) (Math.random() * 10000) % 400));
+        setHeight(this.getImage().getHeight());
+        setWidth(this.getImage().getWidth());
         score = 5;
     }
 
@@ -35,7 +35,7 @@ public class Airplane extends Fly implements Enemy {
 
     @Override
     public void move() {
-        y += speed;
+        setY(getY() + speed);
     }
 
 

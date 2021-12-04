@@ -3,22 +3,22 @@ package Homework;
 import java.awt.image.BufferedImage;
 
 public abstract class Fly {
-    int x;
-    int y;
-    int width;
-    int height;
-    BufferedImage image;
+    protected int x;
+    protected int y;
+    protected int width;
+    protected int height;
+    protected BufferedImage image;
 
     abstract void move();
 
     public BufferedImage getImage() {
-        return image;
+        return this.image;
     }
 
     public void setImage(BufferedImage image) {
         this.image = image;
-        this.width = image.getWidth();
-        this.height = image.getHeight();
+        this.setWidth(image.getWidth());
+        this.setHeight(image.getHeight());
     }
 
     public int getX() {
@@ -54,11 +54,11 @@ public abstract class Fly {
     }
 
 
-    public boolean bang(Fly fly){
-        return fly.getX() >= x - fly.getWidth() &&
-                fly.getY() >= y - fly.getHeight() &&
-                fly.getX() <= x + this.getWidth() &&
-                fly.getY() <= y + this.getHeight();
+    public boolean bang(Fly fly) {
+        return fly.getX() >= getX() - fly.getWidth() &&
+                fly.getY() >= getY() - fly.getHeight() &&
+                fly.getX() <= getX() + this.getWidth() &&
+                fly.getY() <= getY() + this.getHeight();
     }
 
 }

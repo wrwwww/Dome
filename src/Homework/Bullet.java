@@ -5,7 +5,7 @@ public class Bullet extends Fly {
     private int speed;
 
     Bullet() {
-        setSpeed(5);
+        setSpeed(8);
         setImage(Activity.bullet);
         setHeight(getImage().getHeight());
         setWidth(getImage().getWidth());
@@ -20,7 +20,7 @@ public class Bullet extends Fly {
 
     @Override
     void move() {
-        setY(getY() - speed);
+        setY(getY() - getSpeed());
     }
 
 

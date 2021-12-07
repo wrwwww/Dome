@@ -44,10 +44,10 @@ public class Hero extends Fly {
     Bullet[] shoot() {
         if (number == 1) {
             int len=new Bullet().getWidth();
-            return new Bullet[]{new Bullet(this.getX() + this.image[0].getWidth() / 2 - len / 2, this.getY() - 20)};
+            return new Bullet[]{new Bullet(this.getX() + this.getWidth() / 2 - len / 2, this.getY() - 20)};
         } else if (number==2) {
-            int len=new Bullet().getWidth();
-            return new Bullet[]{new Bullet(this.getX() + this.image[0].getWidth() / 4 - len / 2, this.getY()), new Bullet(this.getX() + this.image[0].getWidth() / 2 + len / 2, this.getY())};
+            int len=Activity.bullet.getWidth();
+            return new Bullet[]{new Bullet(this.getX() + this.getWidth() / 4 - len / 2, this.getY()), new Bullet(this.getX() + this.image[0].getWidth() / 2 + len / 2, this.getY())};
         }
         return null;
     }

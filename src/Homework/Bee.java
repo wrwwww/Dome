@@ -3,16 +3,17 @@ package Homework;
 import java.awt.image.BufferedImage;
 
 public class Bee extends Fly implements Reward{
-
+    int f ;
     int speed;
-
     Bee() {
-        speed = 2;
+        setSpeed(2);
+        f = Activity.randomNumber(2);
         super.setImage(Activity.bee);
         setY(-super.getImage().getHeight());
         setX(((int) (Math.random() * 10000) % 400));
         setHeight(super.getImage().getHeight());
         setWidth(super.getImage().getWidth());
+
     }
 
     public int getSpeed() {
@@ -23,12 +24,22 @@ public class Bee extends Fly implements Reward{
         this.speed = speed;
     }
 
-
+    //模式
     @Override
     public void move() {
-        setY(getY() + speed);
-    }
+        if (getX()+getWidth()>=Activity.WIDTH||getX()<=0){
+            f = f == 1 ? 0 : 1;
+        }
+        if (f==0){
+            x+=getSpeed();
+            y+=getSpeed();
 
+        }else if (f==1){
+            x-=speed;
+            y+=speed;
+        }
+
+    }
 
 
     @Override
@@ -38,10 +49,8 @@ public class Bee extends Fly implements Reward{
 
     @Override
     public void setImage(BufferedImage image) {
-        setImage(image);
+        super.setImage(image);
     }
-
-
 
     @Override
     public int type() {

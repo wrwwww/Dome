@@ -3,16 +3,16 @@ package Homework;
 public class Airplane extends Fly implements Enemy {
 
     int speed;
-    int score = 0;
+    int score;
 
     Airplane() {
-        speed = 1;
+        setSpeed(6);
         setImage(Activity.airplane);
         setY(-this.getImage().getHeight());
         setX(((int) (Math.random() * 10000) % 400));
         setHeight(this.getImage().getHeight());
         setWidth(this.getImage().getWidth());
-        score = 5;
+        setScore(5);
     }
 
     public int getSpeed() {
@@ -35,7 +35,7 @@ public class Airplane extends Fly implements Enemy {
 
     @Override
     public void move() {
-        setY(getY() + speed);
+        setY(getY() + getSpeed());
     }
 
 

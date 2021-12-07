@@ -6,12 +6,15 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.util.List;
 import java.util.Timer;
 import java.util.*;
+import java.util.stream.IntStream;
 
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 import static javax.imageio.ImageIO.read;
 
 public class Activity extends JPanel {
@@ -29,6 +32,7 @@ public class Activity extends JPanel {
     static BufferedImage background;
     static BufferedImage backgroundAlbee;
     static BufferedImage over;
+    static BufferedImage life;
     static int HEIGHT;
     static int WIDTH;
     private final Font font;
@@ -40,6 +44,11 @@ public class Activity extends JPanel {
     int num = 0;
     private int status=DESTROYED;//初态
     private long score;//总得分
+    private static PlayerMusic player;
+    static URL Boss_Room;
+    static URL battle_bk0;
+    static URL battle_bk1;
+    static URL battle_bk2;
     //图片的初始化
     static {
         try {
@@ -49,12 +58,18 @@ public class Activity extends JPanel {
             hero0 = read(Objects.requireNonNull(Activity.class.getResource("draw/new/hero2.png")));
             hero1 = read(Objects.requireNonNull(Activity.class.getResource("draw/new/hero2.png")));
             background = read(Objects.requireNonNull(Activity.class.getResource("draw/background.png")));
-            backgroundAlbee = read(Objects.requireNonNull(Activity.class.getResource("draw/backgroundAlbee.jpg")));
             pause = read(Objects.requireNonNull(Activity.class.getResource("draw/pause.png")));
             start = read(Objects.requireNonNull(Activity.class.getResource("draw/start.png")));
-            over = read(Objects.requireNonNull(Activity.class.getResource("draw/gameover.png")));
-            HEIGHT = backgroundAlbee.getHeight();
-            WIDTH = backgroundAlbee.getWidth();
+            over = read(Objects.requireNonNull(Activity.class.getResource("draw/over.png")));
+            life = read(Objects.requireNonNull(Activity.class.getResource("draw/new/life.png")));
+            HEIGHT = 800;
+            WIDTH = 520;
+            Boss_Room = Activity.class.getResource("music/Boss_Room.mp3");
+            battle_bk0 = Activity.class.getResource("music/battle_bk0.mp3");
+            battle_bk1 = Activity.class.getResource("music/battle_bk1.mp3");
+            battle_bk2 = Activity.class.getResource("music/battle_bk2.mp3");
+            player =null;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,8 +83,10 @@ public class Activity extends JPanel {
         hero.setX(WIDTH/2-hero.getWidth()/2);
         hero.setY(HEIGHT-hero.getHeight());
     }
-    Activity() {
+    Activity()  {
         firstRun();
+        player = new PlayerMusic(battle_bk0);
+        player.play();
         font = new Font("宋体", Font.BOLD, 20);
         font1 = new Font("宋体", Font.BOLD, 20);
         MouseAdapter mm = new MouseAdapter() {
@@ -90,11 +107,12 @@ public class Activity extends JPanel {
                         public void run() {
                             if (!isGaveOver()) {
                                 bulletAction();//子弹移动并添加
-//                                flyAction();//敌机奖励机的移动添加
+                                flyAction();//敌机奖励机的移动添加
                                 bangAction();//子弹碰撞fly
                                 bang2Action();//hero碰撞fly
                                 clearArrays();
                                 clearBullet();
+                                backgroundMove();
                             }
                             repaint();//重绘
                         }
@@ -102,6 +120,8 @@ public class Activity extends JPanel {
                     status = STARTED;
                 } else if (status == OVER) {
                     firstRun();
+                    player.close();
+                    player.changeMusic(battle_bk1);
                     status = DESTROYED;
                 }
             }
@@ -123,9 +143,10 @@ public class Activity extends JPanel {
     }
 
    
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args)  {
         JFrame jf = new JFrame("飞机大战");
         JPanel jp = new Activity();
+        jf.setIconImage(bee);
         jf.add(jp);
         jf.setSize(WIDTH, HEIGHT);
         jf.setLocationRelativeTo(null);
@@ -134,15 +155,18 @@ public class Activity extends JPanel {
 
     }
 
+    int bgm_y=HEIGHT-background.getHeight();
+    public void backgroundMove(){
+        bgm_y = bgm_y < 0 ? bgm_y +3 : HEIGHT-background.getHeight();
+    }
+
     public static int randomNumber(int bound) {
         return (int) (Math.random() * 100000) % bound;
     }
 
     public void flyAction() {
         fly();
-        for (Fly i : fly_list) {
-            i.move();
-        }
+        Arrays.stream(fly_list).forEach(Fly::move);
     }
 
     //bullets
@@ -225,8 +249,9 @@ public class Activity extends JPanel {
         fly_list = Arrays.copyOf(fly_list, fly_list.length - list.size());
     }
 
+    //处理越界
     public boolean isOuter(Fly fly) {
-        return fly.getY() + fly.getHeight() <= 0 || fly.getY() >= HEIGHT;
+        return fly.getY() + fly.getHeight() < 0 || fly.getY() >= HEIGHT;
     }
 
     /**
@@ -235,7 +260,6 @@ public class Activity extends JPanel {
      * 先将越界的用不越界的替换最后将原数组空间变得合适
      */
     public void clearBullet() {
-
         int left = 0;
         Fly[] fly = hero.bullets;
         int right = fly.length - 1;
@@ -256,20 +280,6 @@ public class Activity extends JPanel {
             }
         }
         hero.bullets = Arrays.copyOf((Bullet[]) fly, left);
-
-
-//        List<Integer> list = new LinkedList<>();
-//        for (int i = 0; i < hero.bullets.length; i++) {
-//            if (isOuter(hero.bullets[i])) {
-//                list.add(i);
-//            }
-//        }
-//        int a=0;
-//        for (int i:list) {
-//            hero.bullets[i] = hero.bullets[hero.bullets.length - 1 - a++];
-//        }
-//        hero.bullets = Arrays.copyOf(hero.bullets, hero.bullets.length - list.size());
-
     }
 
     /**
@@ -277,7 +287,7 @@ public class Activity extends JPanel {
      */
     public void bulletAction() {
         number += 1;
-        if (number % 20 == 0) {
+        if (number % 15 == 0) {
             Bullet[] tt = hero.shoot();
             Bullet[] temp = new Bullet[hero.bullets.length + tt.length];
             for (int i = 0; i < temp.length; i++) {
@@ -292,7 +302,7 @@ public class Activity extends JPanel {
 
     public void fly() {
         num += 1;
-        if (num % 40 == 0) {
+        if (num % 20 == 0) {
             Fly[] temp = new Fly[fly_list.length + 1];
             System.arraycopy(fly_list, 0, temp, 0, fly_list.length);
             temp[temp.length - 1] = addAirPlane();
@@ -304,24 +314,26 @@ public class Activity extends JPanel {
         int num = randomNumber(10) + 1;
         if (num == 5) {
             return new Bee();
-        } else
+        } else {
             return new Airplane();
+        }
+
     }
 
     //游戏开始
     public void startGame(Graphics draw) {
-        draw.drawImage(backgroundAlbee, 0, 0, null);
+        draw.drawImage(background, 0, bgm_y, null);
         draw.drawImage(hero.getImage(), hero.getX(), hero.getY(), null);
         draw.setFont(font);
+        draw.setColor(Color.white);
         draw.drawString("得分:" + score, 15, 15);
         draw.drawString("HP:" + hero.getHp(), 15, 45);
 
-        for (int i1 = 0; i1 < hero.bullets.length; i1++) {
-            draw.drawImage(hero.bullets[i1].getImage(), hero.bullets[i1].getX(), hero.bullets[i1].getY(), null);
-        }
-        for (Fly value : fly_list) {
-            draw.drawImage(value.getImage(), value.getX(), value.getY(), this);
-        }
+        Arrays.stream(hero.bullets).
+                forEach(bullet ->draw.drawImage(bullet.getImage(),bullet.getX(), bullet.getY(), null));
+        Arrays.stream(fly_list).
+                forEach(fly -> draw.drawImage(fly.getImage(), fly.getX(), fly.getY(), this));
+        draw.setColor(Color.black);
         repaint();
     }
 
@@ -343,7 +355,7 @@ public class Activity extends JPanel {
     @Override
     public void paint(Graphics g) {
         //绘制游戏背景
-        g.drawImage(backgroundAlbee, 0, 0, null);
+//        g.drawImage(backgroundAlbee, 0, 0, null);
         //根据游戏状态绘制界面
         //游戏销毁状态
         if (status == DESTROYED) {
@@ -362,6 +374,48 @@ public class Activity extends JPanel {
         }
 
     }
+//背景音乐
+static class PlayerMusic extends Thread{
 
+    Player player ;
+    boolean play;
+    PlayerMusic(URL path){
+        play=true;
+        try {
+            this.player = new Player(new BufferedInputStream(new FileInputStream(new File(path.getPath()))));
+        } catch (JavaLayerException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    public void changeMusic(URL path) {
+        try {
+            this.player = new Player(new BufferedInputStream(new FileInputStream(new File(path.getPath()))));
+        } catch (JavaLayerException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+        while(isSwitch()) {
+            try {
+                this.player.play();
+            } catch (JavaLayerException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void play(){
+        this.start();
+    }
+
+    public void close() {
+        player.close();
+    }
+    private boolean isSwitch() {
+        return play;
+    }
+}
 }
